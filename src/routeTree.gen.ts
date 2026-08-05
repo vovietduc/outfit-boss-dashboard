@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DonHangRouteImport } from './routes/don-hang'
-import { Route as KhachHangRouteImport } from './routes/khach-hang'
+import { Route as MauSizeRouteImport } from './routes/mau-size'
 import { Route as SanPhamRouteImport } from './routes/san-pham'
 
 const IndexRoute = IndexRouteImport.update({
@@ -24,9 +24,9 @@ const DonHangRoute = DonHangRouteImport.update({
   path: '/don-hang',
   getParentRoute: () => rootRouteImport,
 } as any)
-const KhachHangRoute = KhachHangRouteImport.update({
-  id: '/khach-hang',
-  path: '/khach-hang',
+const MauSizeRoute = MauSizeRouteImport.update({
+  id: '/mau-size',
+  path: '/mau-size',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SanPhamRoute = SanPhamRouteImport.update({
@@ -38,34 +38,34 @@ const SanPhamRoute = SanPhamRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/don-hang': typeof DonHangRoute
-  '/khach-hang': typeof KhachHangRoute
+  '/mau-size': typeof MauSizeRoute
   '/san-pham': typeof SanPhamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/don-hang': typeof DonHangRoute
-  '/khach-hang': typeof KhachHangRoute
+  '/mau-size': typeof MauSizeRoute
   '/san-pham': typeof SanPhamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/don-hang': typeof DonHangRoute
-  '/khach-hang': typeof KhachHangRoute
+  '/mau-size': typeof MauSizeRoute
   '/san-pham': typeof SanPhamRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/don-hang' | '/khach-hang' | '/san-pham'
+  fullPaths: '/' | '/don-hang' | '/mau-size' | '/san-pham'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/don-hang' | '/khach-hang' | '/san-pham'
-  id: '__root__' | '/' | '/don-hang' | '/khach-hang' | '/san-pham'
+  to: '/' | '/don-hang' | '/mau-size' | '/san-pham'
+  id: '__root__' | '/' | '/don-hang' | '/mau-size' | '/san-pham'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DonHangRoute: typeof DonHangRoute
-  KhachHangRoute: typeof KhachHangRoute
+  MauSizeRoute: typeof MauSizeRoute
   SanPhamRoute: typeof SanPhamRoute
 }
 
@@ -85,11 +85,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DonHangRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/khach-hang': {
-      id: '/khach-hang'
-      path: '/khach-hang'
-      fullPath: '/khach-hang'
-      preLoaderRoute: typeof KhachHangRouteImport
+    '/mau-size': {
+      id: '/mau-size'
+      path: '/mau-size'
+      fullPath: '/mau-size'
+      preLoaderRoute: typeof MauSizeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/san-pham': {
@@ -105,7 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DonHangRoute: DonHangRoute,
-  KhachHangRoute: KhachHangRoute,
+  MauSizeRoute: MauSizeRoute,
   SanPhamRoute: SanPhamRoute,
 }
 export const routeTree = rootRouteImport
