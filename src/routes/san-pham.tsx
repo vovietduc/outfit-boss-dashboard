@@ -19,7 +19,7 @@ export const Route = createFileRoute("/san-pham")({
 });
 
 function ProductsPage() {
-  const max = skuAll[0].value;
+  const max = skuAll[0]?.value ?? 1;
   const detail = skuAll.slice(0, 40).map((s) => {
     const rows = sales.filter((r) => r.sku === s.name);
     return {

@@ -36,8 +36,8 @@ export const totals = {
 };
 
 export const dateRange = {
-  from: sales[0].order_date,
-  to: sales[sales.length - 1].order_date,
+  from: sales[0]?.order_date ?? "",
+  to: sales[sales.length - 1]?.order_date ?? "",
 };
 
 export const topSku = sumBy("sku", "revenue").slice(0, 10);
