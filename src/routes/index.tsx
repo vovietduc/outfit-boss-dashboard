@@ -119,7 +119,8 @@ function Index() {
             <CardHeader>
               <CardTitle className="text-base">Cơ cấu danh mục</CardTitle>
             </CardHeader>
-            <CardContent className="h-[300px]">
+            <CardContent>
+              <div className="h-[210px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={categoryShare} dataKey="value" nameKey="name" innerRadius={55} outerRadius={85} paddingAngle={3} isAnimationActive={false}>
@@ -138,7 +139,8 @@ function Index() {
                   />
                 </PieChart>
               </ResponsiveContainer>
-              <ul className="-mt-6 space-y-1">
+              </div>
+              <ul className="mt-4 space-y-1">
                 {categoryShare.map((c, i) => (
                   <li key={c.name} className="flex items-center gap-2 text-xs text-muted-foreground">
                     <span className="size-2 rounded-full" style={{ background: pieColors[i % pieColors.length] }} />
