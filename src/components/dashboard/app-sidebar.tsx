@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, ShoppingBag, Shirt, Users, Scissors } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Shirt, Palette, Scissors } from "lucide-react";
 
 import {
   Sidebar,
@@ -17,7 +17,7 @@ const items = [
   { title: "Tổng quan", url: "/", icon: LayoutDashboard },
   { title: "Đơn hàng", url: "/don-hang", icon: ShoppingBag },
   { title: "Sản phẩm", url: "/san-pham", icon: Shirt },
-  { title: "Khách hàng", url: "/khach-hang", icon: Users },
+  { title: "Màu sắc & Size", url: "/mau-size", icon: Palette },
 ] as const;
 
 export function AppSidebar() {
@@ -31,8 +31,8 @@ export function AppSidebar() {
             <Scissors className="size-4" />
           </span>
           <div className="min-w-0 group-data-[collapsible=icon]:hidden">
-            <p className="truncate text-sm font-semibold text-sidebar-foreground">MAISON Wear</p>
-            <p className="truncate text-xs text-sidebar-foreground/60">Bảng quản trị</p>
+            <p className="truncate text-sm font-semibold text-sidebar-foreground">Clothing Store</p>
+            <p className="truncate text-xs text-sidebar-foreground/60">Phân tích bán hàng</p>
           </div>
         </div>
       </SidebarHeader>
