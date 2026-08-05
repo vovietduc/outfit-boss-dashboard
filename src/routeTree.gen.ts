@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DonHangRouteImport } from './routes/don-hang'
+import { Route as KhachHangRouteImport } from './routes/khach-hang'
+import { Route as SanPhamRouteImport } from './routes/san-pham'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DonHangRoute = DonHangRouteImport.update({
+  id: '/don-hang',
+  path: '/don-hang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KhachHangRoute = KhachHangRouteImport.update({
+  id: '/khach-hang',
+  path: '/khach-hang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SanPhamRoute = SanPhamRouteImport.update({
+  id: '/san-pham',
+  path: '/san-pham',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/don-hang': typeof DonHangRoute
+  '/khach-hang': typeof KhachHangRoute
+  '/san-pham': typeof SanPhamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/don-hang': typeof DonHangRoute
+  '/khach-hang': typeof KhachHangRoute
+  '/san-pham': typeof SanPhamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/don-hang': typeof DonHangRoute
+  '/khach-hang': typeof KhachHangRoute
+  '/san-pham': typeof SanPhamRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/don-hang' | '/khach-hang' | '/san-pham'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/don-hang' | '/khach-hang' | '/san-pham'
+  id: '__root__' | '/' | '/don-hang' | '/khach-hang' | '/san-pham'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DonHangRoute: typeof DonHangRoute
+  KhachHangRoute: typeof KhachHangRoute
+  SanPhamRoute: typeof SanPhamRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +78,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/don-hang': {
+      id: '/don-hang'
+      path: '/don-hang'
+      fullPath: '/don-hang'
+      preLoaderRoute: typeof DonHangRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/khach-hang': {
+      id: '/khach-hang'
+      path: '/khach-hang'
+      fullPath: '/khach-hang'
+      preLoaderRoute: typeof KhachHangRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/san-pham': {
+      id: '/san-pham'
+      path: '/san-pham'
+      fullPath: '/san-pham'
+      preLoaderRoute: typeof SanPhamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DonHangRoute: DonHangRoute,
+  KhachHangRoute: KhachHangRoute,
+  SanPhamRoute: SanPhamRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
