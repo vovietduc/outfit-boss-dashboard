@@ -37,7 +37,7 @@ const chartColors = [
   "var(--color-chart-5)",
 ];
 
-export const tooltipStyle = {
+const tooltipStyle = {
   background: "var(--color-card)",
   border: "1px solid var(--color-border)",
   borderRadius: 10,
