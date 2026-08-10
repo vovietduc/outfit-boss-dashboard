@@ -51,7 +51,7 @@ export const baseProducts: Product[] = (() => {
         id: `sku-${sku}`,
         sku,
         name: `Mẫu ${sku}`,
-        category: CATEGORIES[h % CATEGORIES.length],
+        category: CATEGORIES[h % CATEGORIES.length] ?? "Khác",
         colors: [...v.colors],
         sizes: [...v.sizes],
         price: Math.round(v.price.reduce((a, b) => a + b, 0) / v.price.length),
