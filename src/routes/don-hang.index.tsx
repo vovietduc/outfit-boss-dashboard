@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { money, orderList, sales } from "@/data/store";
 
-export const Route = createFileRoute("/don-hang")({
+export const Route = createFileRoute("/don-hang/")({
   head: () => ({
     meta: [
       { title: "Đơn hàng — Clothing Store Analytics" },
