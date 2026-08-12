@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as KhachHangRouteImport } from './routes/khach-hang'
 import { Route as MauSizeRouteImport } from './routes/mau-size'
 import { Route as SanPhamRouteImport } from './routes/san-pham'
 import { Route as DonHangIndexRouteImport } from './routes/don-hang.index'
+import { Route as DonHangOrderIdRouteImport } from './routes/don-hang.$orderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KhachHangRoute = KhachHangRouteImport.update({
+  id: '/khach-hang',
+  path: '/khach-hang',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MauSizeRoute = MauSizeRouteImport.update({
@@ -34,38 +41,70 @@ const DonHangIndexRoute = DonHangIndexRouteImport.update({
   path: '/don-hang/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DonHangOrderIdRoute = DonHangOrderIdRouteImport.update({
+  id: '/don-hang/$orderId',
+  path: '/don-hang/$orderId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/khach-hang': typeof KhachHangRoute
   '/mau-size': typeof MauSizeRoute
   '/san-pham': typeof SanPhamRoute
+  '/don-hang/$orderId': typeof DonHangOrderIdRoute
   '/don-hang/': typeof DonHangIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/khach-hang': typeof KhachHangRoute
   '/mau-size': typeof MauSizeRoute
   '/san-pham': typeof SanPhamRoute
+  '/don-hang/$orderId': typeof DonHangOrderIdRoute
   '/don-hang': typeof DonHangIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/khach-hang': typeof KhachHangRoute
   '/mau-size': typeof MauSizeRoute
   '/san-pham': typeof SanPhamRoute
+  '/don-hang/$orderId': typeof DonHangOrderIdRoute
   '/don-hang/': typeof DonHangIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mau-size' | '/san-pham' | '/don-hang/'
+  fullPaths:
+    | '/'
+    | '/khach-hang'
+    | '/mau-size'
+    | '/san-pham'
+    | '/don-hang/$orderId'
+    | '/don-hang/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mau-size' | '/san-pham' | '/don-hang'
-  id: '__root__' | '/' | '/mau-size' | '/san-pham' | '/don-hang/'
+  to:
+    | '/'
+    | '/khach-hang'
+    | '/mau-size'
+    | '/san-pham'
+    | '/don-hang/$orderId'
+    | '/don-hang'
+  id:
+    | '__root__'
+    | '/'
+    | '/khach-hang'
+    | '/mau-size'
+    | '/san-pham'
+    | '/don-hang/$orderId'
+    | '/don-hang/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KhachHangRoute: typeof KhachHangRoute
   MauSizeRoute: typeof MauSizeRoute
   SanPhamRoute: typeof SanPhamRoute
+  DonHangOrderIdRoute: typeof DonHangOrderIdRoute
   DonHangIndexRoute: typeof DonHangIndexRoute
 }
 
@@ -76,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/khach-hang': {
+      id: '/khach-hang'
+      path: '/khach-hang'
+      fullPath: '/khach-hang'
+      preLoaderRoute: typeof KhachHangRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mau-size': {
@@ -99,13 +145,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DonHangIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/don-hang/$orderId': {
+      id: '/don-hang/$orderId'
+      path: '/don-hang/$orderId'
+      fullPath: '/don-hang/$orderId'
+      preLoaderRoute: typeof DonHangOrderIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KhachHangRoute: KhachHangRoute,
   MauSizeRoute: MauSizeRoute,
   SanPhamRoute: SanPhamRoute,
+  DonHangOrderIdRoute: DonHangOrderIdRoute,
   DonHangIndexRoute: DonHangIndexRoute,
 }
 export const routeTree = rootRouteImport
