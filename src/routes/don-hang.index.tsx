@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,6 +33,7 @@ function OrdersPage() {
                   <TableHead className="text-right">Số dòng</TableHead>
                   <TableHead className="text-right">Số lượng</TableHead>
                   <TableHead className="text-right">Doanh thu</TableHead>
+                  <TableHead className="w-24" />
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -43,6 +44,15 @@ function OrdersPage() {
                     <TableCell className="text-right">{o.items}</TableCell>
                     <TableCell className="text-right">{o.quantity}</TableCell>
                     <TableCell className="text-right font-medium">{money(o.revenue)} đ</TableCell>
+                    <TableCell className="text-right">
+                      <Link
+                        to="/don-hang/$orderId"
+                        params={{ orderId: String(o.order_id) }}
+                        className="text-sm font-medium text-accent hover:underline"
+                      >
+                        Chi tiết
+                      </Link>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
