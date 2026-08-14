@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, ShoppingBag, Shirt, Palette, Scissors } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Shirt, Palette, Scissors, Users, Ticket, FileBarChart } from "lucide-react";
 
 import {
   Sidebar,
@@ -17,7 +17,10 @@ const items = [
   { title: "Tổng quan", url: "/", icon: LayoutDashboard },
   { title: "Đơn hàng", url: "/don-hang", icon: ShoppingBag },
   { title: "Sản phẩm", url: "/san-pham", icon: Shirt },
+  { title: "Khách hàng", url: "/khach-hang", icon: Users },
   { title: "Màu sắc & Size", url: "/mau-size", icon: Palette },
+  { title: "Khuyến mãi", url: "/khuyen-mai", icon: Ticket },
+  { title: "Báo cáo", url: "/bao-cao", icon: FileBarChart },
 ] as const;
 
 export function AppSidebar() {
