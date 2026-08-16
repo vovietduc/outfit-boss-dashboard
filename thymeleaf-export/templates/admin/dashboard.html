@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Tổng quan')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('dashboard')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Tổng quan', 'Số liệu kinh doanh từ dữ liệu bán hàng thực tế')}"></div>
+    <div class="content">
+
+      <div class="grid k4">
+        <div class="card kpi"><div class="card-body row-between">
+          <div><p class="label">Doanh thu</p>
+            <p class="value" th:text="${#numbers.formatInteger(stats.revenue,0,'POINT')} + ' đ'">146.519 đ</p></div>
+          <span class="icon">💰</span></div></div>
+        <div class="card kpi"><div class="card-body row-between">
+          <div><p class="label">Đơn hàng</p>
+            <p class="value" th:text="${stats.orders}">273</p></div>
+          <span class="icon">🧾</span></div></div>
+        <div class="card kpi"><div class="card-body row-between">
+          <div><p class="label">Sản phẩm bán ra</p>
+            <p class="value" th:text="${stats.quantity}">533</p></div>
+          <span class="icon">👕</span></div></div>
+        <div class="card kpi"><div class="card-body row-between">
+          <div><p class="label">Giá trị đơn TB</p>
+            <p class="value" th:text="${#numbers.formatInteger(stats.aov,0,'POINT')} + ' đ'">537 đ</p></div>
+          <span class="icon">📊</span></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Doanh thu theo tháng</h3><span class="muted">2022</span></div>
+        <div class="card-body">
+          <div class="bar-row" th:each="m : ${revenueByMonth}">
+            <span class="name" th:text="'Tháng ' + ${m.month}">Tháng 06</span>
+            <span class="track"><i th:style="'width:' + ${m.percent} + '%'"></i></span>
+            <span class="val" th:text="${#numbers.formatInteger(m.revenue,0,'POINT')}">40.000</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid k2">
+        <div class="card">
+          <div class="card-head"><h3>Top 10 SKU</h3></div>
+          <div class="card-body">
+            <div class="bar-row" th:each="s : ${topSku}">
+              <span class="name" th:text="${s.sku}">SKU</span>
+              <span class="track"><i th:style="'width:' + ${s.percent} + '%'"></i></span>
+              <span class="val" th:text="${#numbers.formatInteger(s.revenue,0,'POINT')}">0</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Doanh thu theo màu</h3></div>
+          <div class="card-body">
+            <div class="bar-row" th:each="c : ${revenueByColor}">
+              <span class="name" th:text="${c.name}">Đen</span>
+              <span class="track"><i th:style="'width:' + ${c.percent} + '%'"></i></span>
+              <span class="val" th:text="${#numbers.formatInteger(c.revenue,0,'POINT')}">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Đơn hàng gần đây</h3>
+          <a class="btn outline sm" th:href="@{/admin/don-hang}">Xem tất cả</a></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Mã đơn</th><th>Ngày</th><th>SKU</th><th class="num">SL</th>
+              <th class="num">Doanh thu</th><th>Trạng thái</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="o : ${recentOrders}">
+              <td th:text="${o.orderId}">#1001</td>
+              <td th:text="${o.date}">2022-06-01</td>
+              <td th:text="${o.sku}">SKU</td>
+              <td class="num" th:text="${o.quantity}">1</td>
+              <td class="num" th:text="${#numbers.formatInteger(o.revenue,0,'POINT')} + ' đ'">0 đ</td>
+              <td><span class="badge success" th:text="${o.status}">Hoàn tất</span></td>
+              <td><a class="btn outline sm" th:href="@{'/admin/don-hang/' + ${o.orderId}}">Chi tiết</a></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(recentOrders)}"><td colspan="7" class="empty">Chưa có đơn hàng</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>
