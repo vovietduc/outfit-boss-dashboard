@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Đơn hàng')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('orders')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Đơn hàng', 'Danh sách toàn bộ đơn hàng của cửa hàng')}"></div>
+    <div class="content">
+
+      <div class="grid k4">
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Tổng đơn</p><p class="value" th:text="${stats.total}">273</p></div><span class="icon">🧾</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Đang xử lý</p><p class="value" th:text="${stats.processing}">18</p></div><span class="icon">⏳</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Hoàn tất</p><p class="value" th:text="${stats.completed}">240</p></div><span class="icon">✅</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Doanh thu</p>
+          <p class="value" th:text="${#numbers.formatInteger(stats.revenue,0,'POINT')} + ' đ'">146.519 đ</p></div>
+          <span class="icon">💰</span></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <form class="toolbar" th:action="@{/admin/don-hang}" method="get">
+            <input class="grow" type="search" name="q" th:value="${param.q}" placeholder="Tìm mã đơn, SKU..."/>
+            <select name="status">
+              <option value="">Tất cả trạng thái</option>
+              <option value="PENDING">Chờ xác nhận</option>
+              <option value="PROCESSING">Đang xử lý</option>
+              <option value="SHIPPING">Đang giao</option>
+              <option value="COMPLETED">Hoàn tất</option>
+              <option value="CANCELLED">Đã hủy</option>
+            </select>
+            <input type="date" name="from" th:value="${param.from}"/>
+            <input type="date" name="to" th:value="${param.to}"/>
+            <button class="btn" type="submit">Lọc</button>
+            <a class="btn outline" th:href="@{/admin/don-hang/export}">Xuất CSV</a>
+          </form>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Mã đơn</th><th>Ngày</th><th>Khách hàng</th><th>SKU</th><th>Màu / Size</th>
+              <th class="num">SL</th><th class="num">Doanh thu</th><th>Trạng thái</th><th></th>
+            </tr></thead>
+            <tbody>
+            <tr th:each="o : ${orders}">
+              <td th:text="${o.orderId}">#1001</td>
+              <td th:text="${o.date}">2022-06-01</td>
+              <td th:text="${o.customerName}">Khách lẻ</td>
+              <td th:text="${o.sku}">SKU-001</td>
+              <td th:text="${o.color} + ' / ' + ${o.size}">Đen / M</td>
+              <td class="num" th:text="${o.quantity}">1</td>
+              <td class="num" th:text="${#numbers.formatInteger(o.revenue,0,'POINT')} + ' đ'">275 đ</td>
+              <td>
+                <span class="badge warning" th:if="${o.status == 'PENDING'}">Chờ xác nhận</span>
+                <span class="badge accent" th:if="${o.status == 'PROCESSING'}">Đang xử lý</span>
+                <span class="badge" th:if="${o.status == 'SHIPPING'}">Đang giao</span>
+                <span class="badge success" th:if="${o.status == 'COMPLETED'}">Hoàn tất</span>
+                <span class="badge danger" th:if="${o.status == 'CANCELLED'}">Đã hủy</span>
+              </td>
+              <td><a class="btn outline sm" th:href="@{'/admin/don-hang/' + ${o.orderId}}">Chi tiết</a></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(orders)}"><td colspan="9" class="empty">Không có đơn hàng</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <a th:if="${page > 0}" th:href="@{/admin/don-hang(page=${page - 1})}">Trước</a>
+          <span class="current" th:text="${page + 1} + ' / ' + ${totalPages}">1 / 14</span>
+          <a th:if="${page + 1 < totalPages}" th:href="@{/admin/don-hang(page=${page + 1})}">Sau</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

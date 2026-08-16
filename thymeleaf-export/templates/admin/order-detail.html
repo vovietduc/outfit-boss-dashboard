@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Chi tiết đơn hàng')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('orders')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Chi tiết đơn hàng', 'Thông tin đơn, sản phẩm và thanh toán')}"></div>
+    <div class="content">
+
+      <div class="toolbar">
+        <a class="btn outline" th:href="@{/admin/don-hang}">← Quay lại</a>
+        <span class="badge accent" th:text="'Mã đơn: ' + ${order.orderId}">Mã đơn: #1001</span>
+        <form th:action="@{'/admin/don-hang/' + ${order.orderId} + '/trang-thai'}" method="post" class="toolbar">
+          <select name="status">
+            <option value="PENDING" th:selected="${order.status == 'PENDING'}">Chờ xác nhận</option>
+            <option value="PROCESSING" th:selected="${order.status == 'PROCESSING'}">Đang xử lý</option>
+            <option value="SHIPPING" th:selected="${order.status == 'SHIPPING'}">Đang giao</option>
+            <option value="COMPLETED" th:selected="${order.status == 'COMPLETED'}">Hoàn tất</option>
+            <option value="CANCELLED" th:selected="${order.status == 'CANCELLED'}">Đã hủy</option>
+          </select>
+          <button class="btn accent" type="submit">Cập nhật trạng thái</button>
+        </form>
+        <button class="btn outline" type="button" onclick="window.print()">In hóa đơn</button>
+      </div>
+
+      <div class="grid k2">
+        <div class="card">
+          <div class="card-head"><h3>Thông tin đơn</h3></div>
+          <div class="card-body">
+            <p><span class="muted">Ngày đặt:</span> <span th:text="${order.date}">2022-06-01</span></p>
+            <p><span class="muted">Trạng thái:</span> <span class="badge success" th:text="${order.statusLabel}">Hoàn tất</span></p>
+            <p><span class="muted">Số dòng hàng:</span> <span th:text="${#lists.size(order.items)}">2</span></p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Khách hàng</h3></div>
+          <div class="card-body">
+            <p><span class="muted">Tên:</span> <span th:text="${order.customerName}">Nguyễn Văn A</span></p>
+            <p><span class="muted">Email:</span> <span th:text="${order.customerEmail}">a@example.com</span></p>
+            <p><span class="muted">Điện thoại:</span> <span th:text="${order.customerPhone}">0900000000</span></p>
+            <p><span class="muted">Địa chỉ:</span> <span th:text="${order.shippingAddress}">TP.HCM</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Sản phẩm trong đơn</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>SKU</th><th>Màu</th><th>Size</th><th class="num">Đơn giá</th>
+              <th class="num">SL</th><th class="num">Thành tiền</th></tr></thead>
+            <tbody>
+            <tr th:each="i : ${order.items}">
+              <td th:text="${i.sku}">SKU-001</td>
+              <td th:text="${i.color}">Đen</td>
+              <td th:text="${i.size}">M</td>
+              <td class="num" th:text="${#numbers.formatInteger(i.price,0,'POINT')} + ' đ'">275 đ</td>
+              <td class="num" th:text="${i.quantity}">1</td>
+              <td class="num" th:text="${#numbers.formatInteger(i.total,0,'POINT')} + ' đ'">275 đ</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-body" style="display:flex;justify-content:flex-end">
+          <div style="min-width:260px">
+            <div class="row-between"><span class="muted">Tạm tính</span>
+              <span th:text="${#numbers.formatInteger(order.subtotal,0,'POINT')} + ' đ'">275 đ</span></div>
+            <div class="row-between"><span class="muted">Giảm giá</span>
+              <span th:text="'-' + ${#numbers.formatInteger(order.discount,0,'POINT')} + ' đ'">-0 đ</span></div>
+            <div class="row-between"><span class="muted">Phí vận chuyển</span>
+              <span th:text="${#numbers.formatInteger(order.shippingFee,0,'POINT')} + ' đ'">0 đ</span></div>
+            <hr style="border:none;border-top:1px solid var(--border);margin:10px 0"/>
+            <div class="row-between"><strong>Tổng cộng</strong>
+              <strong th:text="${#numbers.formatInteger(order.total,0,'POINT')} + ' đ'">275 đ</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

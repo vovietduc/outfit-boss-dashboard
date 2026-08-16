@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Khách hàng')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('customers')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Khách hàng', 'Hồ sơ khách hàng và lịch sử mua hàng')}"></div>
+    <div class="content">
+
+      <div class="grid k4">
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Tổng khách hàng</p><p class="value" th:text="${stats.total}">150</p></div><span class="icon">👤</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Khách quay lại</p><p class="value" th:text="${stats.returning}">62</p></div><span class="icon">🔁</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Chi tiêu TB</p>
+          <p class="value" th:text="${#numbers.formatInteger(stats.avgSpend,0,'POINT')} + ' đ'">977 đ</p></div><span class="icon">💳</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Khách VIP</p><p class="value" th:text="${stats.vip}">12</p></div><span class="icon">💎</span></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <form class="toolbar" th:action="@{/admin/khach-hang}" method="get">
+            <input class="grow" type="search" name="q" th:value="${param.q}" placeholder="Tìm theo tên, email, SĐT..."/>
+            <select name="tier">
+              <option value="">Tất cả hạng</option>
+              <option value="DIAMOND">Kim cương</option>
+              <option value="GOLD">Vàng</option>
+              <option value="SILVER">Bạc</option>
+              <option value="BRONZE">Đồng</option>
+            </select>
+            <button class="btn" type="submit">Lọc</button>
+            <a class="btn outline" th:href="@{/admin/khach-hang/export}">Xuất CSV</a>
+          </form>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Khách hàng</th><th>Email</th><th>Điện thoại</th><th>Hạng</th>
+              <th class="num">Số đơn</th><th class="num">Tổng chi tiêu</th><th>Đơn gần nhất</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="c : ${customers}">
+              <td th:text="${c.name}">Nguyễn Văn A</td>
+              <td th:text="${c.email}">a@example.com</td>
+              <td th:text="${c.phone}">0900000000</td>
+              <td>
+                <span class="badge accent" th:if="${c.tier == 'DIAMOND'}">Kim cương</span>
+                <span class="badge warning" th:if="${c.tier == 'GOLD'}">Vàng</span>
+                <span class="badge" th:if="${c.tier == 'SILVER'}">Bạc</span>
+                <span class="badge" th:if="${c.tier == 'BRONZE'}">Đồng</span>
+              </td>
+              <td class="num" th:text="${c.orderCount}">4</td>
+              <td class="num" th:text="${#numbers.formatInteger(c.totalSpend,0,'POINT')} + ' đ'">1.200 đ</td>
+              <td th:text="${c.lastOrderDate}">2022-09-12</td>
+              <td><a class="btn outline sm" th:href="@{'/admin/khach-hang/' + ${c.id}}">Hồ sơ</a></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(customers)}"><td colspan="8" class="empty">Không có khách hàng</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>
