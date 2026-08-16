@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--
+  Layout fragments dùng chung cho toàn bộ trang admin.
+  Cách dùng trong mỗi trang:
+    <head th:replace="~{admin/layout :: head('Tiêu đề')}"></head>
+    <aside th:replace="~{admin/layout :: sidebar('dashboard')}"></aside>
+-->
+<head th:fragment="head(title)">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${title} + ' — Clothing Store Admin'">Clothing Store Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"/>
+  <link rel="stylesheet" th:href="@{/css/admin.css}" href="../../static/css/admin.css"/>
+</head>
+<body>
+
+<aside th:fragment="sidebar(active)" class="sidebar">
+  <div class="brand"><span class="logo">👗</span> Clothing Store</div>
+  <p class="sub">Bảng điều khiển quản trị</p>
+
+  <div class="nav-label">Tổng quan</div>
+  <nav class="nav">
+    <a th:href="@{/admin}" th:classappend="${active == 'dashboard'} ? ' active'">📊 Tổng quan</a>
+    <a th:href="@{/admin/bao-cao}" th:classappend="${active == 'reports'} ? ' active'">📈 Báo cáo</a>
+  </nav>
+
+  <div class="nav-label">Kinh doanh</div>
+  <nav class="nav">
+    <a th:href="@{/admin/don-hang}" th:classappend="${active == 'orders'} ? ' active'">🧾 Đơn hàng</a>
+    <a th:href="@{/admin/san-pham}" th:classappend="${active == 'products'} ? ' active'">👕 Sản phẩm</a>
+    <a th:href="@{/admin/khach-hang}" th:classappend="${active == 'customers'} ? ' active'">👤 Khách hàng</a>
+    <a th:href="@{/admin/khuyen-mai}" th:classappend="${active == 'promotions'} ? ' active'">🎟️ Khuyến mãi</a>
+    <a th:href="@{/admin/mau-size}" th:classappend="${active == 'variants'} ? ' active'">🎨 Màu sắc &amp; Size</a>
+  </nav>
+</aside>
+
+<div th:fragment="pageHeader(title, subtitle)" class="page-header">
+  <div>
+    <h1 th:text="${title}">Tiêu đề</h1>
+    <p th:text="${subtitle}">Mô tả</p>
+  </div>
+  <div>
+    <span class="badge accent">Admin</span>
+  </div>
+</div>
+
+</body>
+</html>

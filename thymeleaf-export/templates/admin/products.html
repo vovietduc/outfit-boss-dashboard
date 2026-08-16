@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Sản phẩm')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('products')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Quản lý sản phẩm', 'Thêm, sửa, xóa, tìm kiếm và đánh giá sản phẩm')}"></div>
+    <div class="content">
+
+      <div class="grid k4">
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Tổng sản phẩm</p><p class="value" th:text="${stats.total}">40</p></div>
+          <span class="icon">👕</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Đang bán</p><p class="value" th:text="${stats.active}">32</p></div>
+          <span class="icon">✅</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Sắp hết hàng</p><p class="value" th:text="${stats.lowStock}">5</p></div>
+          <span class="icon">⚠️</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Đánh giá TB</p><p class="value" th:text="${stats.avgRating} + ' ★'">4.3 ★</p></div>
+          <span class="icon">⭐</span></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <form class="toolbar" th:action="@{/admin/san-pham}" method="get">
+            <input class="grow" type="search" name="q" th:value="${param.q}" placeholder="Tìm theo tên, SKU, màu..."/>
+            <select name="category">
+              <option value="">Tất cả danh mục</option>
+              <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"
+                      th:selected="${param.category != null and param.category[0] == c}">Áo thun</option>
+            </select>
+            <select name="color">
+              <option value="">Tất cả màu</option>
+              <option th:each="c : ${colors}" th:value="${c}" th:text="${c}">Đen</option>
+            </select>
+            <select name="size">
+              <option value="">Tất cả size</option>
+              <option th:each="s : ${sizes}" th:value="${s}" th:text="${s}">M</option>
+            </select>
+            <select name="status">
+              <option value="">Tất cả trạng thái</option>
+              <option value="ACTIVE">Đang bán</option>
+              <option value="DRAFT">Nháp</option>
+              <option value="ARCHIVED">Ngừng bán</option>
+            </select>
+            <button class="btn" type="submit">Lọc</button>
+            <a class="btn accent" th:href="@{/admin/san-pham/moi}">+ Thêm sản phẩm</a>
+            <a class="btn outline" th:href="@{/admin/san-pham/export}">Xuất CSV</a>
+          </form>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>SKU</th><th>Tên sản phẩm</th><th>Danh mục</th><th>Màu</th><th>Size</th>
+              <th class="num">Giá</th><th class="num">Tồn kho</th><th class="num">Doanh thu</th>
+              <th>Đánh giá</th><th>Trạng thái</th><th>Thao tác</th>
+            </tr></thead>
+            <tbody>
+            <tr th:each="p : ${products}">
+              <td th:text="${p.sku}">SKU-001</td>
+              <td th:text="${p.name}">Áo thun basic</td>
+              <td th:text="${p.category}">Áo thun</td>
+              <td th:text="${p.color}">Đen</td>
+              <td th:text="${p.size}">M</td>
+              <td class="num" th:text="${#numbers.formatInteger(p.price,0,'POINT')} + ' đ'">275 đ</td>
+              <td class="num">
+                <span th:text="${p.stock}">12</span>
+                <span class="progress"><i th:style="'width:' + ${p.stockPercent} + '%'"></i></span>
+              </td>
+              <td class="num" th:text="${#numbers.formatInteger(p.revenue,0,'POINT')}">1.200</td>
+              <td><span class="stars"
+                        th:text="${#strings.repeat('★', p.rating)} + ${#strings.repeat('☆', 5 - p.rating)}">★★★★☆</span></td>
+              <td>
+                <span class="badge success" th:if="${p.status == 'ACTIVE'}">Đang bán</span>
+                <span class="badge warning" th:if="${p.status == 'DRAFT'}">Nháp</span>
+                <span class="badge danger" th:if="${p.status == 'ARCHIVED'}">Ngừng bán</span>
+              </td>
+              <td>
+                <a class="btn outline sm" th:href="@{'/admin/san-pham/' + ${p.id} + '/sua'}">Sửa</a>
+                <form th:action="@{'/admin/san-pham/' + ${p.id} + '/xoa'}" method="post" style="display:inline"
+                      onsubmit="return confirm('Xóa sản phẩm này?')">
+                  <button class="btn danger sm" type="submit">Xóa</button>
+                </form>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(products)}"><td colspan="11" class="empty">Không tìm thấy sản phẩm nào</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <a th:if="${page > 0}" th:href="@{/admin/san-pham(page=${page - 1})}">Trước</a>
+          <span class="current" th:text="${page + 1} + ' / ' + ${totalPages}">1 / 5</span>
+          <a th:if="${page + 1 < totalPages}" th:href="@{/admin/san-pham(page=${page + 1})}">Sau</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

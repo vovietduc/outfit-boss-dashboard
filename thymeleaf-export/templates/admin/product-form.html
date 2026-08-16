@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Sản phẩm')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('products')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Thông tin sản phẩm', 'Thêm mới hoặc chỉnh sửa sản phẩm')}"></div>
+    <div class="content">
+      <div class="card" style="max-width:760px">
+        <div class="card-head"><h3 th:text="${product.id} != null ? 'Sửa sản phẩm' : 'Thêm sản phẩm'">Thêm sản phẩm</h3></div>
+        <div class="card-body">
+          <form th:action="@{/admin/san-pham/luu}" th:object="${product}" method="post"
+                style="display:grid;gap:14px;grid-template-columns:1fr 1fr">
+            <input type="hidden" th:field="*{id}"/>
+            <label>SKU<br/><input th:field="*{sku}" required="required" style="width:100%"/></label>
+            <label>Tên sản phẩm<br/><input th:field="*{name}" required="required" style="width:100%"/></label>
+            <label>Danh mục<br/>
+              <select th:field="*{category}" style="width:100%">
+                <option th:each="c : ${categories}" th:value="${c}" th:text="${c}">Áo thun</option>
+              </select></label>
+            <label>Màu<br/>
+              <select th:field="*{color}" style="width:100%">
+                <option th:each="c : ${colors}" th:value="${c}" th:text="${c}">Đen</option>
+              </select></label>
+            <label>Size<br/>
+              <select th:field="*{size}" style="width:100%">
+                <option th:each="s : ${sizes}" th:value="${s}" th:text="${s}">M</option>
+              </select></label>
+            <label>Giá (đ)<br/><input type="number" step="1" th:field="*{price}" style="width:100%"/></label>
+            <label>Tồn kho<br/><input type="number" th:field="*{stock}" style="width:100%"/></label>
+            <label>Đánh giá (1-5)<br/><input type="number" min="1" max="5" th:field="*{rating}" style="width:100%"/></label>
+            <label>Trạng thái<br/>
+              <select th:field="*{status}" style="width:100%">
+                <option value="ACTIVE">Đang bán</option>
+                <option value="DRAFT">Nháp</option>
+                <option value="ARCHIVED">Ngừng bán</option>
+              </select></label>
+            <div style="grid-column:1/-1;display:flex;gap:10px;justify-content:flex-end">
+              <a class="btn outline" th:href="@{/admin/san-pham}">Hủy</a>
+              <button class="btn accent" type="submit">Lưu sản phẩm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

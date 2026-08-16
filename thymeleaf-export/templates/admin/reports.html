@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Báo cáo')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('reports')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Báo cáo', 'Doanh thu, cơ cấu size/màu và top SKU')}"></div>
+    <div class="content">
+
+      <form class="toolbar" th:action="@{/admin/bao-cao}" method="get">
+        <select name="month">
+          <option value="">Tất cả các tháng</option>
+          <option th:each="m : ${months}" th:value="${m}" th:text="'Tháng ' + ${m}">Tháng 06</option>
+        </select>
+        <button class="btn" type="submit">Lọc</button>
+        <a class="btn outline" th:href="@{/admin/bao-cao/export}">Xuất CSV</a>
+      </form>
+
+      <div class="grid k4">
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Doanh thu</p>
+          <p class="value" th:text="${#numbers.formatInteger(stats.revenue,0,'POINT')} + ' đ'">146.519 đ</p></div><span class="icon">💰</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Đơn hàng</p><p class="value" th:text="${stats.orders}">273</p></div><span class="icon">🧾</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Sản phẩm bán ra</p><p class="value" th:text="${stats.quantity}">533</p></div><span class="icon">👕</span></div></div>
+        <div class="card kpi"><div class="card-body row-between"><div>
+          <p class="label">Giá trị đơn TB</p>
+          <p class="value" th:text="${#numbers.formatInteger(stats.aov,0,'POINT')} + ' đ'">537 đ</p></div><span class="icon">📊</span></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Xu hướng doanh thu &amp; số đơn</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tháng</th><th class="num">Doanh thu</th><th class="num">Số đơn</th><th>Biểu đồ</th></tr></thead>
+            <tbody>
+            <tr th:each="m : ${revenueByMonth}">
+              <td th:text="'Tháng ' + ${m.month}">Tháng 06</td>
+              <td class="num" th:text="${#numbers.formatInteger(m.revenue,0,'POINT')} + ' đ'">40.000 đ</td>
+              <td class="num" th:text="${m.orders}">70</td>
+              <td style="width:40%"><span class="progress"><i th:style="'width:' + ${m.percent} + '%'"></i></span></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid k2">
+        <div class="card">
+          <div class="card-head"><h3>Cơ cấu size</h3></div>
+          <div class="card-body">
+            <div class="bar-row" th:each="s : ${quantityBySize}">
+              <span class="name" th:text="${s.name}">M</span>
+              <span class="track"><i th:style="'width:' + ${s.percent} + '%'"></i></span>
+              <span class="val" th:text="${s.value}">120</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Doanh thu theo màu</h3></div>
+          <div class="card-body">
+            <div class="bar-row" th:each="c : ${revenueByColor}">
+              <span class="name" th:text="${c.name}">Đen</span>
+              <span class="track"><i th:style="'width:' + ${c.percent} + '%'"></i></span>
+              <span class="val" th:text="${#numbers.formatInteger(c.revenue,0,'POINT')}">30.000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Top SKU bán chạy</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>SKU</th><th class="num">Số lượng</th><th class="num">Doanh thu</th><th class="num">Tỷ trọng</th></tr></thead>
+            <tbody>
+            <tr th:each="s, i : ${topSku}">
+              <td th:text="${i.count}">1</td>
+              <td th:text="${s.sku}">SKU-001</td>
+              <td class="num" th:text="${s.quantity}">24</td>
+              <td class="num" th:text="${#numbers.formatInteger(s.revenue,0,'POINT')} + ' đ'">6.600 đ</td>
+              <td class="num" th:text="${s.percent} + '%'">4.5%</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

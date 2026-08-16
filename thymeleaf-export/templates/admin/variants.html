@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('Màu sắc & Size')}"></head>
+<body>
+<div class="layout">
+  <aside th:replace="~{admin/layout :: sidebar('variants')}"></aside>
+  <main class="main">
+    <div th:replace="~{admin/layout :: pageHeader('Màu sắc &amp; Size', 'Phân tích cơ cấu bán hàng theo thuộc tính sản phẩm')}"></div>
+    <div class="content">
+      <div class="grid k2">
+        <div class="card">
+          <div class="card-head"><h3>Theo màu sắc</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Màu</th><th class="num">Số lượng</th><th class="num">Doanh thu</th><th class="num">Tỷ trọng</th></tr></thead>
+              <tbody>
+              <tr th:each="c : ${colorStats}">
+                <td th:text="${c.name}">Đen</td>
+                <td class="num" th:text="${c.quantity}">120</td>
+                <td class="num" th:text="${#numbers.formatInteger(c.revenue,0,'POINT')} + ' đ'">30.000 đ</td>
+                <td class="num" th:text="${c.percent} + '%'">21%</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Theo size</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Size</th><th class="num">Số lượng</th><th class="num">Doanh thu</th><th class="num">Tỷ trọng</th></tr></thead>
+              <tbody>
+              <tr th:each="s : ${sizeStats}">
+                <td th:text="${s.name}">M</td>
+                <td class="num" th:text="${s.quantity}">140</td>
+                <td class="num" th:text="${#numbers.formatInteger(s.revenue,0,'POINT')} + ' đ'">38.000 đ</td>
+                <td class="num" th:text="${s.percent} + '%'">26%</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
